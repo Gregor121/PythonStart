@@ -2,20 +2,39 @@ import random
 hp = 100
 
 def bedroom():
-    print("""You wake up in your room cold and dark.  Notice a flashing
+    story = """You wake up in your room cold and dark.  Notice a flashing
     warning that all O2 has been vented during the night. Your cabin seems fine
-    but all other life on the ship is dead.""")
-    user_input = input("""Choose an adventure!
-            1: Move to cockpit
-            2: Venture into hallway
-            > """)
-    if user_input == "1":
+    but all other life on the ship is dead."""
+    
+    user_input = adv_input(story, ["Move to cockpit", "Venture into hallway"])
+
+    if user_input == 1:
         cockpit()
+    elif user_input == 2:
+        hallway()
+
+def cockpit():
+    print("""Slipping through a secret compartment brings you into the cockpit.
+    The forward glass is all iced over and the pilot is slumped in his seat. 
+    Do you try and fire up the shuttle? Only time will tell.""")
+    user_input = input("""Choose an adventure!
+        1: Shove pilot out of the way and fire this baby up
+        2: Leave controls alone and head down the hallway towards the engines
+        > """)
+    if user_input == "1":
+        explode = random.randint(1, 6)
+        if explode == 3:
+            print('You hit the big red button and the ship exploded')
+            exit(0)
+        else:
+            print('You got the controls fired up, but nothing is responding')
+            hallway()
     elif user_input == "2":
+        print('You choose to leave the controls be and head for the engine room')
         hallway()
     else:
         print("Not correct value")
-        exit(1)
+        exit(1)            
 
 def hallway():
     minotaur = 50
@@ -65,24 +84,69 @@ def hallway():
            exit(0)
 
         print("Your HP is now " + str(hp)) 
-        
-
-
     print("You make your way to the kitchen")
     kitchen()
-           
-           
 
-        
-
-
-        
-
-
-
-        
+def kitchen():
+    global hp
+    print("""Confidently strolling into the kitchen after your battle with
+    the minotaur you come upon a much needed buffet in the kitchen!""")
+    user_input = input("""Choose an adventure!
+        1: You see a half eaten KitKat bar on the counter. 
+        2: You see a delicious looking ostrich egg.
+        3: You are to panicked to eat and head for the engine room.
+        > """)
     
+    if user_input == "1":
+        hp = hp + 10
+        print('Your HP has been restored, it is now ' + str(hp))
+        engine_room()
+    elif user_input == "2":
+        print("""If this already wasn't a bad situation the egg turned out
+        to be a face hugger alien and you are now dead""")
+        exit(0)
+    elif user_input == "3":
+        print("You charge onward to the engine room")
+        engine_room()
+    else:
+        print('Not correct value')    
+        exit(1)
 
+def engine_room():
+    story = """You've made it to the engine room! You now have to abandon ship or
+    fix this wreck!"""
 
+    user_input = adv_input(story, ["Pick a space suit and leave", "Attempt to repair engine controls", "Replace plasma conduit inhibitor"])
+
+    if user_input == 1:
+        print("You slowly start floating into space using tiny thrusters, hopefully someone will find you")
+    elif user_input == 2:
+        explode = random.randint(1, 2)    
+        if explode == 2:
+            print('Luck ran out, your engine has exploded and you died')
+        else:
+            print('You fixed the engine controls!  Away we go!')
+    elif user_input == 3:
+        print('You attempt to replace the plasma conduit inhibitor and get blasted with hot magma, sigh. Death again.')
+                    
+
+def adv_input(story, choices):
+    print(story)
+    while True:
+        print('Choose an adventure!')
+        for i, c in enumerate(choices):
+            print(i + 1, ':' , c)
+        try:
+            user_input = int(input('> '))
+        except:
+            print('Please enter a number')
+            continue               
+        if user_input >= 1 and user_input <= len(choices):
+            return user_input
+        print("Your input is invalid, try again")
+
+    
+           
+           
 
 bedroom()
